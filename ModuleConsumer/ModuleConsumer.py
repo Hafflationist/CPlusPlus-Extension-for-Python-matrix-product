@@ -30,8 +30,8 @@ def test(fn, name):
 
 if __name__ == "__main__":
     print('Starting module test:')
-    print(division(2, 2))
-    print(division(2, -2))
+    print(division(16, 2))
+    print(division(divisor = 2, divident = -2))
     print('Running benchmarks with COUNT = {}'.format(COUNT))
 
     test(lambda d: [tanh(x) for x in d], '[tanh(x) for x in d] (Python implementation)')
