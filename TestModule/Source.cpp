@@ -19,7 +19,9 @@ PyObject* TestModule_example(PyObject* self, PyObject* args, PyObject* kwargs) {
 	}
 
 	/* Function implementation starts here */
-	
+	std::string hugo = std::string(Py_STRINGIFY(-110));
+
+
 	if (divisor == 0) {
 		std::stringstream ss;
 		ss << divident << " / " << divisor;
