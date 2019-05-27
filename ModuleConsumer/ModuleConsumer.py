@@ -2,6 +2,7 @@ from itertools import islice
 from random import random
 from time import perf_counter
 from TestModule import division
+from TestModule import matrixMultiplication
 
 
 COUNT = 500000  # Change this value depending on the speed of your computer
@@ -31,6 +32,9 @@ def test(fn, name):
 if __name__ == "__main__":
     print('Starting module test:')
     print(division(16, 2))
+
+    print(matrixMultiplication(16, 2))
+
     print(division(divisor = 2, divident = -2))
     print('Running benchmarks with COUNT = {}'.format(COUNT))
 
