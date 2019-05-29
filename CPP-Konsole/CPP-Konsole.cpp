@@ -55,7 +55,7 @@ void incrementAllIterators(std::vector<typename std::vector<T>::iterator> & iter
 	}
 }
 
-Matrix<int> matrixMultiplication(Matrix<int> matrixA, Matrix<int> matrixB) {
+Matrix<long> matrixMultiplication(Matrix<long> matrixA, Matrix<long> matrixB) {
 	// Validate format:
 	bool isValidA = isFormatValid(matrixA);
 	bool isValidB = isFormatValid(matrixB);
@@ -74,22 +74,29 @@ Matrix<int> matrixMultiplication(Matrix<int> matrixA, Matrix<int> matrixB) {
 
 
 
-	std::vector<std::vector<int>::iterator> columnIterVectorB;
+	std::vector<std::vector<long>::iterator> columnIterVectorB;
 
 	for (auto columnIter = matrixB.begin(); columnIter != matrixB.end(); ++columnIter) {
 		columnIterVectorB.push_back(columnIter->begin());
 	}
 
 
-	std::vector<std::vector<int>> matrixC;
+	std::vector<std::vector<long>> matrixC;
 
-	std::vector<int> tempRowC;
+	std::vector<long> tempRowC;
 	std::cout << "Punkt 1" << std::endl;
 
-	for (auto iter = matrixB.begin()->begin(); iter != matrixB.begin()->end(); incrementAllIterators<int>(columnIterVectorB), ++iter) {
+	for (auto iter = matrixB.begin()->begin(); 
+		iter != matrixB.begin()->end(); 
+		incrementAllIterators<int>(columnIterVectorB), ++iter) {
+
 		tempRowC.clear();
-		std::vector<int> columnVectorB;
-		for (auto columnVectorBIter = columnIterVectorB.begin(); columnVectorBIter != columnIterVectorB.end(); ++columnVectorBIter) {
+		std::vector<long> columnVectorB;
+
+		for (auto columnVectorBIter = columnIterVectorB.begin(); 
+			columnVectorBIter != columnIterVectorB.end(); 
+			++columnVectorBIter) {
+
 			columnVectorB.push_back(**columnVectorBIter);
 		}
 
@@ -116,11 +123,11 @@ int main() {
 
 
 
-	std::vector<std::vector<int>> matrixA = {
+	std::vector<std::vector<long>> matrixA = {
 		{1,2},
 		{2,3}
 	};
-	std::vector<std::vector<int>> matrixB = {
+	std::vector<std::vector<long>> matrixB = {
 		{4,5},
 		{5,6}
 	};

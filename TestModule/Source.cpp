@@ -3,36 +3,37 @@
 #include <sstream>
 #include <string>
 #include "Calculator.h"
+#include "PyConverters.h"
+#include "matrix.h"
 
 
 PyDoc_STRVAR(TestModule_matrixMultiplication_doc, "Matrixmultiplikation");
 
 PyObject* TestModule_matrixMultiplication(PyObject* self, PyObject* args, PyObject* kwargs) {
-	PyObject* matrixA = 0;
-	PyObject* matrixB = 0;
+	PyObject* matrixA_obj = nullptr;
+	PyObject* matrixB_obj = nullptr;
 
-	/* Parse positional and keyword arguments */
-	static char* keywords[] = { "matrixA", "matrixB", nullptr };
-	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO", keywords, &matrixA, &matrixB)) {
+		static char* keywords[] = { "matrixA", "matrixB", nullptr };
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO", keywords, &matrixA_obj, &matrixB_obj)) {
 		return nullptr;
 	}
-	/* Function implementation starts here */
-	std::string hugo = std::string(Py_STRINGIFY(-110));
 	
-	//if (divisor == 0) {
-	//	std::stringstream ss;
-	//	ss << divident << " / " << divisor;
-	//	PyErr_SetString(PyExc_ZeroDivisionError, ss.str().c_str());
-	//	return nullptr;
-	//}
-	PyObject* returnList = PyList_New(0);
-	bool hugobert = PyList_Check(returnList);
-	PyList_Append(returnList, PyLong_FromLong(88));
-	PyList_Append(returnList, PyLong_FromLong(666));
+	Matrix<long> matrixA;
+	Matrix<long> matrixB;
 
-	//returnList = Py_BuildValue("[items]", 88, 666, 88);
+	try {
+		matrixA = PyList_ToMatrix(matrixA_obj);
+		matrixB = PyList_ToMatrix(matrixB_obj);
+	}
+	catch (const std::exception & exception) {
+		PyErr_SetString(PyExc_TypeError, exception.what());
+		return nullptr;
+	}
 
-	return returnList;
+	Matrix<long> resultMatrix = Calculator::matrixMultiplication(matrixA, matrixB);
+
+
+	return PyList_FromMatrix(resultMatrix);
 }
 
 PyDoc_STRVAR(TestModule_example_doc, "Dokumentation zur Methode");
@@ -74,7 +75,7 @@ static PyMethodDef TestModule_functions[] = {
  * Initialize TestModule. May be called multiple times, so avoid
  * using static state.
  */
-int exec_TestModule(PyObject* module) {
+int exec_TestModule(PyObject * module) {
 	PyModule_AddFunctions(module, TestModule_functions);
 
 	PyModule_AddStringConstant(module, "__author__", "Marcel Robohm");
