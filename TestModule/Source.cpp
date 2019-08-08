@@ -13,11 +13,12 @@ PyObject* TestModule_matrixMultiplication(PyObject* self, PyObject* args, PyObje
 	PyObject* matrixA_obj = nullptr;
 	PyObject* matrixB_obj = nullptr;
 
-		static char* keywords[] = { "matrixA", "matrixB", nullptr };
+	static char* keywords[] = { "matrixA", "matrixB", nullptr };
 	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO", keywords, &matrixA_obj, &matrixB_obj)) {
+		PyErr_SetString(PyExc_TypeError, "Wrong type of parameters!");
 		return nullptr;
 	}
-	
+
 	Matrix<long> matrixA;
 	Matrix<long> matrixB;
 
@@ -25,48 +26,20 @@ PyObject* TestModule_matrixMultiplication(PyObject* self, PyObject* args, PyObje
 		matrixA = PyList_ToMatrix(matrixA_obj);
 		matrixB = PyList_ToMatrix(matrixB_obj);
 	}
-	catch (const std::exception & exception) {
+	catch (const std::exception& exception) {
 		PyErr_SetString(PyExc_TypeError, exception.what());
 		return nullptr;
 	}
 
 	Matrix<long> resultMatrix = Calculator::matrixMultiplication(matrixA, matrixB);
 
-
 	return PyList_FromMatrix(resultMatrix);
-}
-
-PyDoc_STRVAR(TestModule_example_doc, "Dokumentation zur Methode");
-
-PyObject* TestModule_example(PyObject* self, PyObject* args, PyObject* kwargs) {
-	long divident = 0;
-	long divisor = 0;
-
-	/* Parse positional and keyword arguments */
-	static char* keywords[] = { "divident", "divisor", nullptr };
-	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii", keywords, &divident, &divisor)) {
-		return nullptr;
-	}
-
-	/* Function implementation starts here */
-	std::string hugo = std::string(Py_STRINGIFY(-110));
-
-
-	if (divisor == 0) {
-		std::stringstream ss;
-		ss << divident << " / " << divisor;
-		PyErr_SetString(PyExc_ZeroDivisionError, ss.str().c_str());
-		return nullptr;
-	}
-
-	return PyLong_FromLong(divident / divisor);
 }
 
 /*
  * List of functions to add to TestModule in exec_TestModule().
  */
 static PyMethodDef TestModule_functions[] = {
-	{ "division", (PyCFunction)TestModule_example, METH_VARARGS | METH_KEYWORDS, TestModule_example_doc },
 	{ "matrixMultiplication", (PyCFunction)TestModule_matrixMultiplication, METH_VARARGS | METH_KEYWORDS, TestModule_matrixMultiplication_doc },
 	{ nullptr, nullptr, 0, nullptr } // marks end of array
 };
@@ -75,7 +48,7 @@ static PyMethodDef TestModule_functions[] = {
  * Initialize TestModule. May be called multiple times, so avoid
  * using static state.
  */
-int exec_TestModule(PyObject * module) {
+int exec_TestModule(PyObject* module) {
 	PyModule_AddFunctions(module, TestModule_functions);
 
 	PyModule_AddStringConstant(module, "__author__", "Marcel Robohm");

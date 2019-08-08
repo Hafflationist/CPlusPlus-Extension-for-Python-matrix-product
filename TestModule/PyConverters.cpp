@@ -25,7 +25,7 @@ Matrix<long> PyList_ToMatrix(PyObject* object) {
 			throw std::exception("No nested list!");
 		}
 		auto rowLength = PyList_Size(row);
-		//PyLong_AsLong(row)
+
 		if (rowLength != (int)columns) {
 			throw std::exception("No valid shape!");
 		}
